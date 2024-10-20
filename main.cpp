@@ -16,7 +16,8 @@ class Data {
 };
 
 void Swap(Data& obj1, Data& obj2) {
-
+  if(&obj1 == &obj2)
+   return;
   std::lock(obj1.m, obj2.m);
   lock_guard<mutex> lock1(obj1.m, adopt_lock);
   lock_guard<mutex> lock2(obj2.m, adopt_lock);
@@ -27,7 +28,8 @@ void Swap(Data& obj1, Data& obj2) {
 }
 
 void Swap1(Data& obj1, Data& obj2) {
-
+  if(&obj1 == &obj2)
+   return;
   scoped_lock lock(obj1.m, obj2.m);
   std::swap(obj1.m_a, obj2.m_a);
   std::swap(obj1.m_b, obj2.m_b);
@@ -35,6 +37,8 @@ void Swap1(Data& obj1, Data& obj2) {
 }
 
 void Swap2(Data& obj1, Data& obj2) {
+   if(&obj1 == &obj2)
+   return;
   unique_lock<mutex> lock1(obj1.m, defer_lock);
   unique_lock<mutex> lock2(obj2.m, defer_lock);
   std::lock(lock1, lock2);
